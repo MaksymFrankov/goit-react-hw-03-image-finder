@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from 'react';
 import SearchBar from './Searchbar';
+import ImageGallery from './ImageGallery';
 
 function fetchImages(options) {
   // Set default values if options are not provided
@@ -22,15 +23,18 @@ function fetchImages(options) {
 }
 
 const App = () => {
+  const [images, setImages] = useState([]);
+
   const handleSearch = (query) => {
     fetchImages({ q: query })
-      .then((images) => console.log(images))
+      .then((images) => setImages(images))
       .catch((error) => console.error(error));
   };
 
   return (
     <div>
       <SearchBar onSubmit={handleSearch} />
+      <ImageGallery images={images} />
     </div>
   );
 };
