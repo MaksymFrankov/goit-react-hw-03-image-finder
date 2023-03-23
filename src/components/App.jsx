@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SearchBar from './Searchbar';
 import ImageGallery from './ImageGallery';
+import Button from './Button';
 
 function fetchImages(options) {
   // Set default values if options are not provided
@@ -24,17 +25,29 @@ function fetchImages(options) {
 
 const App = () => {
   const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
 
   const handleSearch = (query) => {
-    fetchImages({ q: query })
+    setPage(1); // Reset page to 1 when doing a new search
+    fetchImages({ q: query, page: 1 })
       .then((images) => setImages(images))
+      .catch((error) => console.error(error));
+  };
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    fetchImages({ q: 'cat', page: nextPage })
+      .then((newImages) => setImages([...images, ...newImages]))
+      .then(() => setPage(nextPage))
       .catch((error) => console.error(error));
   };
 
   return (
     <div>
       <SearchBar onSubmit={handleSearch} />
-      <ImageGallery images={images} />
+
+      {images.length > 0 && <ImageGallery images={images} />}
+      {images.length > 0 && <Button onClick={handleLoadMore} />}
     </div>
   );
 };
