@@ -3,7 +3,8 @@ import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import s from 'components/Styles.module.css';
 
-const modalRoot = document.querySelector('#modal-root');
+// const modalRoot = document.querySelector('#modal-root');
+const modalRoot = document.getElementById('root');
 
 export default class Modal extends Component {
   static propTypes = {
